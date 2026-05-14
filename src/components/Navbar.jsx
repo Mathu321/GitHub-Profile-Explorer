@@ -72,7 +72,7 @@ const Navbar = () => {
                          focus:outline-none focus:ring-2 focus:ring-[#2ea043]/60
                          focus:ring-offset-2 focus:ring-offset-[#161b22]"
                         >
-                            Sign In
+                            GitHub Sign In
                         </button>
                     </div>
 
