@@ -42,8 +42,8 @@ const RepoIcon = () => (
 );
 
 const ExternalLinkIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        strokeWidth={2} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
         className="w-3.5 h-3.5" aria-hidden="true">
         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
         <polyline points="15 3 21 3 21 9" />
@@ -54,15 +54,8 @@ const ExternalLinkIcon = () => (
 const RepoCard = ({ repo }) => {
     if (!repo) return null;
 
-    const {
-        name,
-        description,
-        html_url,
-        language,
-        stargazers_count,
-        forks_count,
-        updated_at,
-    } = repo;
+    const { name, description, html_url, language,
+        stargazers_count, forks_count, updated_at } = repo;
 
     const langColor = LANGUAGE_COLORS[language] ?? "#8b949e";
 
@@ -77,29 +70,36 @@ const RepoCard = ({ repo }) => {
             rel="noreferrer noopener"
             aria-label={`View ${name} on GitHub`}
             className="
-        group relative flex flex-col gap-3
+        group relative flex flex-col gap-3 overflow-hidden
         bg-[#161b22] border border-[#30363d] rounded-xl p-5
-        hover:border-[#388bfd] hover:shadow-lg hover:shadow-[#388bfd]/10
-        hover:-translate-y-0.5
-        transition-all duration-200 ease-out
-        cursor-pointer
+        hover:border-[#388bfd]/60
+        hover:-translate-y-1 hover:shadow-xl hover:shadow-[#388bfd]/10
+        transition-all duration-250 ease-out cursor-pointer
       "
         >
+            <div
+                className="absolute top-0 left-0 right-0 h-0.5 opacity-0
+                   group-hover:opacity-100 transition-opacity duration-300"
+                style={{ backgroundColor: langColor }}
+                aria-hidden="true"
+            />
+
             <span className="absolute top-4 right-4 text-[#8b949e]
                        opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <ExternalLinkIcon />
             </span>
 
+
             <div className="flex items-center gap-2 pr-6">
                 <span className="text-[#388bfd] shrink-0">
                     <RepoIcon />
                 </span>
-
                 <h3 className="text-[#388bfd] group-hover:text-white font-semibold text-sm
                        truncate transition-colors duration-200">
                     {name}
                 </h3>
             </div>
+
             {description ? (
                 <p className="text-[#8b949e] text-xs leading-relaxed line-clamp-2 flex-1">
                     {description}
@@ -108,22 +108,19 @@ const RepoCard = ({ repo }) => {
                 <p className="text-[#6e7681] text-xs italic flex-1">No description provided.</p>
             )}
 
-            <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-1">
+            <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-1">
+
                 {language && (
                     <span className="flex items-center gap-1.5 text-[#8b949e] text-xs">
-                        <span
-                            className="w-2.5 h-2.5 rounded-full shrink-0"
+                        <span className="w-2.5 h-2.5 rounded-full shrink-0"
                             style={{ backgroundColor: langColor }}
-                            aria-label={`Language: ${language}`}
-                        />
+                            aria-label={`Language: ${language}`} />
                         {language}
                     </span>
                 )}
 
                 <span className="flex items-center gap-1 text-[#8b949e] text-xs">
-                    <span className="text-yellow-400">
-                        <StarIcon />
-                    </span>
+                    <span className="text-[#e3b341]"><StarIcon /></span>
                     {stargazers_count?.toLocaleString() ?? 0}
                 </span>
 
@@ -133,9 +130,10 @@ const RepoCard = ({ repo }) => {
                         {forks_count.toLocaleString()}
                     </span>
                 )}
+
                 {lastUpdated && (
-                    <span className="ml-auto text-[#6e7681] text-xs">
-                        Updated {lastUpdated}
+                    <span className="ml-auto text-[#6e7681] text-xs tabular-nums">
+                        {lastUpdated}
                     </span>
                 )}
 

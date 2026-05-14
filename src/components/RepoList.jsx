@@ -1,6 +1,27 @@
 import { useState, useMemo } from "react";
 import RepoCard from "./RepoCard";
 
+const LANGUAGE_COLORS = {
+    JavaScript: "#f1e05a",
+    TypeScript: "#3178c6",
+    Python: "#3572A5",
+    HTML: "#e34c26",
+    CSS: "#563d7c",
+    Java: "#b07219",
+    "C++": "#f34b7d",
+    C: "#555555",
+    "C#": "#178600",
+    Ruby: "#701516",
+    Go: "#00ADD8",
+    Rust: "#dea584",
+    PHP: "#4F5D95",
+    Swift: "#F05138",
+    Kotlin: "#A97BFF",
+    Shell: "#89e051",
+    Vue: "#41b883",
+    Dart: "#00B4AB",
+};
+
 const SearchIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
         strokeWidth={2} stroke="currentColor" className="w-4 h-4" aria-hidden="true">
@@ -17,28 +38,19 @@ const ClearIcon = () => (
 );
 
 const RepoList = ({ repos = [] }) => {
-
     const [query, setQuery] = useState("");
     const [activeLang, setActiveLang] = useState("");
 
     const languages = useMemo(() => {
-        const langs = repos
-            .map((r) => r.language)
-            .filter(Boolean);
+        const langs = repos.map((r) => r.language).filter(Boolean);
         return [...new Set(langs)].sort();
-
     }, [repos]);
 
     const filteredRepos = useMemo(() => {
         const lowerQuery = query.toLowerCase().trim();
-
         return repos.filter((repo) => {
-            const matchesQuery =
-                !lowerQuery || repo.name.toLowerCase().includes(lowerQuery);
-
-            const matchesLang =
-                !activeLang || repo.language === activeLang;
-
+            const matchesQuery = !lowerQuery || repo.name.toLowerCase().includes(lowerQuery);
+            const matchesLang = !activeLang || repo.language === activeLang;
             return matchesQuery && matchesLang;
         });
     }, [repos, query, activeLang]);
@@ -53,23 +65,29 @@ const RepoList = ({ repos = [] }) => {
 
     return (
         <section aria-label="Repositories">
-
-            <div className="flex items-center justify-between mb-4">
-                <h2 className="text-white font-semibold text-lg">
+            <div className="flex items-center justify-between mb-5">
+                <h2 className="flex items-center gap-2.5 text-lg font-bold
+                       bg-gradient-to-r from-white to-[#8b949e]
+                       bg-clip-text text-transparent">
                     Repositories
-                    <span className="ml-2 bg-[#30363d] text-[#8b949e] text-xs font-normal
-                           px-2 py-0.5 rounded-full">
+                    <span className="bg-[#21262d] border border-[#30363d] text-[#8b949e]
+                           text-xs font-normal px-2 py-0.5 rounded-full
+                           tabular-nums" style={{ color: "#8b949e" }}>
                         {repos.length}
                     </span>
                 </h2>
 
-                <span className="text-[#8b949e] text-xs">
+                <span className="text-[#6e7681] text-xs tabular-nums">
                     {filteredRepos.length} of {repos.length} shown
                 </span>
             </div>
+
             <div className="flex flex-col gap-3 mb-6">
-                <div className="relative">
-                    <span className="absolute inset-y-0 left-3 flex items-center text-[#8b949e] pointer-events-none">
+
+                <div className="relative group">
+                    <span className="absolute inset-y-0 left-3.5 flex items-center
+                           text-[#8b949e] group-focus-within:text-[#388bfd]
+                           pointer-events-none transition-colors duration-200">
                         <SearchIcon />
                     </span>
 
@@ -80,11 +98,14 @@ const RepoList = ({ repos = [] }) => {
                         placeholder="Filter repositories…"
                         aria-label="Filter repositories by name"
                         className="
-              w-full pl-9 pr-9 py-2
-              bg-[#0d1117] text-[#cdd9e5] placeholder-[#8b949e]
-              border border-[#30363d] rounded-lg text-sm
-              focus:outline-none focus:border-[#388bfd] focus:ring-1 focus:ring-[#388bfd]
-              hover:border-[#8b949e] transition-colors duration-150
+              w-full pl-10 pr-9 py-2.5
+              bg-[#0d1117] text-[#cdd9e5] placeholder-[#6e7681]
+              border border-[#30363d] rounded-xl text-sm
+              transition-all duration-200
+              hover:border-[#8b949e]
+              focus:outline-none focus:border-[#388bfd]
+              focus:ring-2 focus:ring-[#388bfd]/20
+              focus:shadow-md focus:shadow-[#388bfd]/10
             "
                     />
 
@@ -92,46 +113,57 @@ const RepoList = ({ repos = [] }) => {
                         <button
                             onClick={() => setQuery("")}
                             aria-label="Clear search"
-                            className="absolute inset-y-0 right-3 flex items-center text-[#8b949e]
-                         hover:text-white transition-colors duration-150"
+                            className="absolute inset-y-0 right-3 flex items-center
+                         text-[#8b949e] hover:text-white
+                         transition-colors duration-150"
                         >
                             <ClearIcon />
                         </button>
                     )}
                 </div>
+
                 {languages.length > 0 && (
                     <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by language">
+
                         <button
                             onClick={() => setActiveLang("")}
                             className={`
-                px-3 py-1 rounded-full text-xs font-medium border transition-colors duration-150
+                flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium
+                border transition-all duration-150
                 ${activeLang === ""
-                                    ? "bg-[#388bfd] border-[#388bfd] text-white"
+                                    ? "bg-[#388bfd] border-[#388bfd] text-white shadow-sm shadow-[#388bfd]/30"
                                     : "bg-transparent border-[#30363d] text-[#8b949e] hover:border-[#8b949e] hover:text-white"
                                 }
               `}
                         >
                             All
                         </button>
+
                         {languages.map((lang) => (
                             <button
                                 key={lang}
-                                onClick={() => setActiveLang(lang)}
+                                onClick={() => setActiveLang(lang === activeLang ? "" : lang)}
                                 aria-pressed={activeLang === lang}
                                 className={`
-                  px-3 py-1 rounded-full text-xs font-medium border transition-colors duration-150
+                  flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium
+                  border transition-all duration-150
                   ${activeLang === lang
-                                        ? "bg-[#388bfd] border-[#388bfd] text-white"
+                                        ? "bg-[#388bfd] border-[#388bfd] text-white shadow-sm shadow-[#388bfd]/30"
                                         : "bg-transparent border-[#30363d] text-[#8b949e] hover:border-[#8b949e] hover:text-white"
                                     }
                 `}
                             >
+                                <span className="w-2 h-2 rounded-full shrink-0"
+                                    style={{ backgroundColor: LANGUAGE_COLORS[lang] ?? "#8b949e" }}
+                                    aria-hidden="true" />
                                 {lang}
                             </button>
                         ))}
+
                     </div>
                 )}
             </div>
+
             {filteredRepos.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {filteredRepos.map((repo) => (
@@ -140,30 +172,37 @@ const RepoList = ({ repos = [] }) => {
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center py-16 gap-3 text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        strokeWidth={1.5} stroke="currentColor"
-                        className="w-10 h-10 text-[#30363d]" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round"
-                            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-                    </svg>
-                    <p className="text-[#8b949e] text-sm">
-                        No repositories match&nbsp;
-                        <span className="text-white font-medium">
+                    <div className="w-14 h-14 rounded-full bg-[#161b22] border border-[#30363d]
+                          flex items-center justify-center shadow-md shadow-black/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            strokeWidth={1.5} stroke="currentColor"
+                            className="w-6 h-6 text-[#8b949e]" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round"
+                                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                        </svg>
+                    </div>
+
+                    <div>
+                        <p className="text-[#cdd9e5] text-sm font-medium">No matches found</p>
+                        <p className="text-[#8b949e] text-xs mt-0.5">
                             {query && `"${query}"`}
                             {query && activeLang && " in "}
                             {activeLang}
-                        </span>
-                    </p>
+                        </p>
+                    </div>
+
                     <div className="flex gap-2 mt-1">
                         {query && (
                             <button onClick={() => setQuery("")}
-                                className="text-[#388bfd] text-xs hover:underline">
+                                className="text-[#388bfd] hover:text-[#58a6ff] text-xs
+                           hover:underline underline-offset-2 transition-colors duration-150">
                                 Clear search
                             </button>
                         )}
                         {activeLang && (
                             <button onClick={() => setActiveLang("")}
-                                className="text-[#388bfd] text-xs hover:underline">
+                                className="text-[#388bfd] hover:text-[#58a6ff] text-xs
+                           hover:underline underline-offset-2 transition-colors duration-150">
                                 Show all languages
                             </button>
                         )}

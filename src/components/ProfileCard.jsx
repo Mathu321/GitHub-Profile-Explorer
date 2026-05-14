@@ -18,7 +18,7 @@ const RepoIcon = () => (
 
 const LocationIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-        className="w-4 h-4" aria-hidden="true">
+        className="w-3.5 h-3.5" aria-hidden="true">
         <path fillRule="evenodd"
             d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975
          0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-2.003 3.5-4.697 3.5-8.327a8 8
@@ -30,7 +30,7 @@ const LocationIcon = () => (
 
 const LinkIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-        className="w-4 h-4" aria-hidden="true">
+        className="w-3.5 h-3.5" aria-hidden="true">
         <path fillRule="evenodd"
             d="M19.902 4.098a3.75 3.75 0 00-5.304 0l-4.5 4.5a3.75 3.75 0 001.035 6.037.75.75
          0 01-.646 1.353 5.25 5.25 0 01-1.449-8.45l4.5-4.5a5.25 5.25 0 117.424 7.424l-1.757
@@ -43,95 +43,96 @@ const LinkIcon = () => (
 );
 
 const StatBadge = ({ icon, label, count }) => (
-    <div className="flex flex-col items-center gap-1 bg-[#0d1117] rounded-lg px-5 py-3
-                  border border-[#30363d] hover:border-[#388bfd] transition-colors duration-200">
+    <div className="flex flex-col items-center gap-1.5
+                  bg-[#0d1117] rounded-xl px-4 py-4
+                  border border-[#30363d]
+                  hover:border-[#388bfd]/60 hover:-translate-y-0.5
+                  hover:shadow-md hover:shadow-[#388bfd]/10
+                  transition-all duration-200 cursor-default">
         <div className="flex items-center gap-1.5 text-[#388bfd]">
             {icon}
-            <span className="text-lg font-bold text-white">{count?.toLocaleString() ?? "—"}</span>
+            <span className="text-xl font-bold text-white tabular-nums">
+                {count?.toLocaleString() ?? "—"}
+            </span>
         </div>
-        <span className="text-[#8b949e] text-xs uppercase tracking-wider">{label}</span>
+        <span className="text-[#8b949e] text-xs font-medium uppercase tracking-wider">
+            {label}
+        </span>
     </div>
 );
 
 const ProfileCard = ({ profile }) => {
     if (!profile) return null;
-    const {
-        avatar_url,
-        name,
-        login,
-        bio,
-        location,
-        blog,
-        followers,
-        following,
-        public_repos,
-        html_url,
-    } = profile;
+
+    const { avatar_url, name, login, bio, location, blog,
+        followers, following, public_repos, html_url } = profile;
 
     const blogUrl = blog && !blog.startsWith("http") ? `https://${blog}` : blog;
 
     return (
-        <div className="w-full bg-[#161b22] border border-[#30363d] rounded-2xl
-                    p-6 sm:p-8 hover:border-[#8b949e] transition-colors duration-300
-                    shadow-lg shadow-black/30">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                <img
-                    src={avatar_url}
-                    alt={`${login}'s avatar`}
-                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover
-                     ring-2 ring-[#30363d] hover:ring-[#388bfd]
-                     transition-all duration-300 shrink-0"
-                />
+        <div className="w-full bg-[#161b22] border border-[#30363d] rounded-2xl p-6 sm:p-8
+                    hover:border-[#388bfd]/40
+                    hover:shadow-xl hover:shadow-[#388bfd]/5
+                    transition-all duration-300 shadow-lg shadow-black/30">
 
-                <div className="flex flex-col items-center sm:items-start gap-2 text-center sm:text-left min-w-0">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+
+                <div className="relative shrink-0 group">
+                    <div className="absolute -inset-0.5 rounded-full bg-gradient-to-br
+                          from-[#388bfd] to-[#2ea043] opacity-0
+                          group-hover:opacity-100 transition-opacity duration-300
+                          blur-sm" aria-hidden="true" />
+                    <img
+                        src={avatar_url}
+                        alt={`${login}'s avatar`}
+                        className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover
+                       ring-2 ring-[#30363d] group-hover:ring-transparent
+                       transition-all duration-300"
+                    />
+                </div>
+
+                <div className="flex flex-col items-center sm:items-start gap-2
+                        text-center sm:text-left min-w-0 flex-1">
 
                     {name && (
-                        <h2 className="text-xl sm:text-2xl font-bold text-white leading-tight">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight tracking-tight">
                             {name}
                         </h2>
                     )}
 
-                    <a
-                        href={html_url}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="text-[#388bfd] hover:underline text-sm font-medium"
-                    >
+                    <a href={html_url} target="_blank" rel="noreferrer noopener"
+                        className="text-[#388bfd] hover:text-[#58a6ff] text-sm font-medium
+                        hover:underline underline-offset-2 transition-colors duration-150">
                         @{login}
                     </a>
 
                     {bio && (
-                        <p className="text-[#8b949e] text-sm leading-relaxed max-w-lg">
+                        <p className="text-[#8b949e] text-sm leading-relaxed max-w-lg mt-1">
                             {bio}
                         </p>
                     )}
 
-                    <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1 mt-1">
-
+                    <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1.5 mt-1">
                         {location && (
                             <span className="flex items-center gap-1.5 text-[#8b949e] text-xs">
                                 <LocationIcon />
                                 {location}
                             </span>
                         )}
-
                         {blogUrl && (
-                            <a
-                                href={blogUrl}
-                                target="_blank"
-                                rel="noreferrer noopener"
-                                className="flex items-center gap-1.5 text-[#388bfd] text-xs hover:underline"
-                            >
+                            <a href={blogUrl} target="_blank" rel="noreferrer noopener"
+                                className="flex items-center gap-1.5 text-[#388bfd] text-xs
+                            hover:underline underline-offset-2 transition-colors duration-150">
                                 <LinkIcon />
                                 {blog.replace(/^https?:\/\//, "")}
                             </a>
                         )}
-
                     </div>
                 </div>
             </div>
 
-            <hr className="border-[#30363d] my-6" />
+            <div className="my-6 h-px bg-gradient-to-r
+                      from-transparent via-[#30363d] to-transparent" />
 
             <div className="grid grid-cols-3 gap-3">
                 <StatBadge icon={<UsersIcon />} label="Followers" count={followers} />
