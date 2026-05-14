@@ -22,9 +22,9 @@ const CloseIcon = () => (
 );
 
 const NAV_LINKS = [
-    { label: "Explore", href: "#" },
-    { label: "Trending", href: "#" },
-    { label: "About", href: "#" },
+    { label: "Explore", href: "https://github.com/explore", target: "_blank" },
+    { label: "Trending", href: "https://github.com/trending", target: "_blank" },
+    { label: "About", href: "https://github.com/about", target: "_blank" },
 ];
 
 const Navbar = () => {
@@ -54,6 +54,7 @@ const Navbar = () => {
                             <a
                                 key={link.label}
                                 href={link.href}
+                                target={link.target}
                                 className="text-[#8b949e] hover:text-white hover:bg-white/5
                            px-3 py-2 rounded-md text-sm font-medium
                            transition-all duration-200"
