@@ -63,17 +63,19 @@ const Navbar = () => {
                             </a>
                         ))}
 
-                        <button
-                            type="button"
+                        <a
+                            href="https://github.com/login"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="ml-3 bg-[#238636] hover:bg-[#2ea043] active:scale-95
-                         text-white text-sm font-medium px-4 py-1.5 rounded-md
-                         shadow-sm shadow-black/20
-                         transition-all duration-200
-                         focus:outline-none focus:ring-2 focus:ring-[#2ea043]/60
-                         focus:ring-offset-2 focus:ring-offset-[#161b22]"
+             text-white text-sm font-medium px-4 py-1.5 rounded-md
+             shadow-sm shadow-black/20
+             transition-all duration-200
+             focus:outline-none focus:ring-2 focus:ring-[#2ea043]/60
+             focus:ring-offset-2 focus:ring-offset-[#161b22]"
                         >
                             GitHub Sign In
-                        </button>
+                        </a>
                     </div>
 
                     <button
