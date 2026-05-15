@@ -100,6 +100,7 @@ const Navbar = () => {
                         <a
                             key={link.label}
                             href={link.href}
+                            target={link.target}
                             onClick={() => setMobileMenuOpen(false)}
                             className="block text-[#8b949e] hover:text-white hover:bg-white/5
                          px-3 py-2.5 rounded-md text-sm font-medium
@@ -108,15 +109,17 @@ const Navbar = () => {
                             {link.label}
                         </a>
                     ))}
-                    <button
-                        type="button"
+                    <a
+                        href="https://github.com/login"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         onClick={() => setMobileMenuOpen(false)}
-                        className="w-full mt-2 bg-[#238636] hover:bg-[#2ea043] active:scale-95
-                       text-white text-sm font-medium px-4 py-2.5 rounded-md
-                       transition-all duration-200"
+                        className="block w-full mt-2 bg-[#238636] hover:bg-[#2ea043] active:scale-95
+             text-white text-sm font-medium px-4 py-2.5 rounded-md
+             text-center transition-all duration-200"
                     >
                         Sign In
-                    </button>
+                    </a>
                 </div>
             )}
 
